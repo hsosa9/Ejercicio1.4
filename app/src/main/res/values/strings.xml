@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Ejercicio1.4</string>
+    <string name="btn_foto">FOTOGRAFIA</string>
+    <string name="btn_galeru">GALERIA</string>
 </resources>
