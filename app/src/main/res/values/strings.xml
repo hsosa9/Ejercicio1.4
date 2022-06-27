@@ -3,4 +3,5 @@
     <string name="btn_foto">FOTOGRAFIA</string>
     <string name="btn_galeru">GALERIA</string>
     <string name="txt_N">Nombre del la foto</string>
+    <string name="btn_Guardar">GUARDAR</string>
 </resources>
