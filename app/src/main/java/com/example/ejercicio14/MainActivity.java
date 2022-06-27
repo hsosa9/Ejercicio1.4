@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -15,8 +16,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.example.ejercicio14.Tabla.Imagen;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,19 +31,25 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private ImageView img;
-
+    long id;
+    EditText txt_Nombre;
+    Bitmap imageBitmap;
+    Context context;
+    SQLiteConexion objectSQLiteConexion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        txt_Nombre = (EditText) findViewById(R.id.txt_Nombre);
+
         img = (ImageView) findViewById(R.id.imageView);
 
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, 1000);
         }
-
+        objectSQLiteConexion = new SQLiteConexion(this);
     }
 
     //METODO PARA CREAR UN NOMBRE UNICO A CADA FOTO
@@ -105,5 +115,22 @@ public class MainActivity extends AppCompatActivity {
         mediaScanIntent.setData(contentUri);
         this.sendBroadcast(mediaScanIntent);
     }
+
+
+    public void storeImage(View view){
+        try {
+            if (!txt_Nombre.getText().toString().isEmpty() && img.getDrawable() != null && imageBitmap != null){
+                objectSQLiteConexion.storeImage(new Imagen(txt_Nombre.getText().toString(), imageBitmap));
+            }
+            else{
+                Toast.makeText(context, "Porfavos seleccione nombre de la imagen", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch (Exception e)
+        {
+            Toast.makeText(context, e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
 
 }
